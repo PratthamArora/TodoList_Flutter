@@ -1,27 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:todolistflutter/db/database_helper.dart';
+import 'package:todolistflutter/model/note.dart';
 
 class NoteDetail extends StatefulWidget {
-  String appBarTitle;
+  final String appBarTitle;
+  final Note note;
 
-  NoteDetail(this.appBarTitle);
+  NoteDetail(this.note, this.appBarTitle);
 
   @override
   State<StatefulWidget> createState() {
-    return NoteDetailState(this.appBarTitle);
+    return NoteDetailState(this.note, this.appBarTitle);
   }
 }
 
 class NoteDetailState extends State<NoteDetail> {
+  DatabaseHelper databaseHelper = DatabaseHelper();
   static var _priority = ['High', 'Low'];
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   String appBarTitle;
+  Note note;
 
-  NoteDetailState(this.appBarTitle);
+  NoteDetailState(this.note, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.title;
+
+    titleController.text = note.title;
+    descController.text = note.description;
 
     return WillPopScope(
       onWillPop: () {
@@ -51,9 +59,10 @@ class NoteDetailState extends State<NoteDetail> {
                       );
                     }).toList(),
                     style: textStyle,
-                    value: 'Low',
+                    value: getPriorityString(note.priority),
                     onChanged: (valueSelectedByUser) {
                       setState(() {
+                        getPriorityInt(valueSelectedByUser);
                         debugPrint('User selected: $valueSelectedByUser');
                       });
                     },
@@ -67,6 +76,7 @@ class NoteDetailState extends State<NoteDetail> {
                     controller: titleController,
                     style: textStyle,
                     onChanged: (value) {
+                      updateTitle();
                       debugPrint('New value is $value');
                     },
                     decoration: InputDecoration(
@@ -84,6 +94,7 @@ class NoteDetailState extends State<NoteDetail> {
                     controller: descController,
                     style: textStyle,
                     onChanged: (value) {
+                      updateDesc();
                       debugPrint('New value is $value');
                     },
                     decoration: InputDecoration(
@@ -139,6 +150,38 @@ class NoteDetailState extends State<NoteDetail> {
             ),
           )),
     );
+  }
+
+  void getPriorityInt(String value) {
+    switch (value) {
+      case 'HIGH':
+        note.priority = 1;
+        break;
+      case 'LOW':
+        note.priority = 2;
+        break;
+    }
+  }
+
+  String getPriorityString(int value) {
+    String priority;
+    switch (value) {
+      case 1:
+        priority = _priority[0];
+        break;
+      case 2:
+        priority = _priority[1];
+        break;
+    }
+    return priority;
+  }
+
+  void updateTitle() {
+    note.title = titleController.text;
+  }
+
+  void updateDesc() {
+    note.description = descController.text;
   }
 
   void moveToLastScreen() {

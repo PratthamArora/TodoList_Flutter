@@ -31,7 +31,7 @@ class NoteListState extends State<NoteList> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           debugPrint("FAB Tapped");
-          navigateToDetail('Add ToDo');
+          navigateToDetail(Note('', '', 2), 'Add ToDo');
         },
         tooltip: 'Add ToDo',
         child: Icon(Icons.add),
@@ -68,7 +68,8 @@ class NoteListState extends State<NoteList> {
               ),
               onTap: () {
                 debugPrint("ListTile Tapped");
-                navigateToDetail('Edit ${this.noteList[pos].title}');
+                navigateToDetail(
+                    this.noteList[pos], 'Edit ${this.noteList[pos].title}');
               },
             ),
           );
@@ -111,9 +112,9 @@ class NoteListState extends State<NoteList> {
     }
   }
 
-  void navigateToDetail(String title) {
+  void navigateToDetail(Note note, String title) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return NoteDetail(title);
+      return NoteDetail(note, title);
     }));
   }
 
