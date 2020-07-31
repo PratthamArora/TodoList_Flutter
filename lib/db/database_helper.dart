@@ -12,8 +12,8 @@ class DatabaseHelper {
   String columnId = 'id';
   String columnTitle = 'title';
   String columnDescription = 'description';
-  String columnDate = 'Date';
-  String columnPriority = 'Priority';
+  String columnDate = 'date';
+  String columnPriority = 'priority';
 
   DatabaseHelper._createInstance();
 

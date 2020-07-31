@@ -68,8 +68,7 @@ class NoteListState extends State<NoteList> {
               ),
               onTap: () {
                 debugPrint("ListTile Tapped");
-                navigateToDetail(
-                    this.noteList[pos], 'Edit ${this.noteList[pos].title}');
+                navigateToDetail(this.noteList[pos], 'Edit ToDo');
               },
             ),
           );
@@ -107,15 +106,20 @@ class NoteListState extends State<NoteList> {
   void _deleteNote(BuildContext context, Note note) async {
     int result = await databaseHelper.deleteNote(note.id);
     if (result != 0) {
-      _displaySnackBar(context, 'Todo deleted Successfully');
+      _displaySnackBar(context, 'Todo Deleted Successfully');
       updateNotes();
     }
   }
 
-  void navigateToDetail(Note note, String title) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
+  void navigateToDetail(Note note, String title) async {
+    bool result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return NoteDetail(note, title);
     }));
+
+    if (result == true) {
+      updateNotes();
+    }
   }
 
   void _displaySnackBar(BuildContext context, String msg) {

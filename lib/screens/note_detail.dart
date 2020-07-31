@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todolistflutter/db/database_helper.dart';
 import 'package:todolistflutter/model/note.dart';
 
@@ -120,6 +121,7 @@ class NoteDetailState extends State<NoteDetail> {
                           ),
                           onPressed: () {
                             setState(() {
+                              _saveNote();
                               debugPrint('Save button clicked');
                             });
                           },
@@ -138,6 +140,7 @@ class NoteDetailState extends State<NoteDetail> {
                           ),
                           onPressed: () {
                             setState(() {
+                              _deleteNote();
                               debugPrint('Delete button clicked');
                             });
                           },
@@ -154,10 +157,10 @@ class NoteDetailState extends State<NoteDetail> {
 
   void getPriorityInt(String value) {
     switch (value) {
-      case 'HIGH':
+      case 'High':
         note.priority = 1;
         break;
-      case 'LOW':
+      case 'Low':
         note.priority = 2;
         break;
     }
@@ -184,7 +187,52 @@ class NoteDetailState extends State<NoteDetail> {
     note.description = descController.text;
   }
 
+  void _saveNote() async {
+    moveToLastScreen();
+
+    note.date = DateFormat.yMMMd().format(DateTime.now()).toString();
+    int result;
+    if (note.id != null) {
+      //update
+      result = await databaseHelper.updateNote(note);
+    } else {
+      //insert
+      result = await databaseHelper.insertNote(note);
+    }
+    if (result != 0) {
+      //success
+      _showAlertDialog('Todo Saved Successfully');
+    } else {
+      //failed
+      _showAlertDialog('Problem Saving Todo');
+    }
+  }
+
+  void _deleteNote() async {
+    moveToLastScreen();
+    if (note.id == null) {
+      _showAlertDialog('No Todo deleted');
+      return;
+    }
+    int result = await databaseHelper.deleteNote(note.id);
+    if (result != 0) {
+      //success
+      _showAlertDialog('Todo Deleted Successfully');
+    } else {
+      //failed
+      _showAlertDialog('Problem Deleting Todo');
+    }
+  }
+
   void moveToLastScreen() {
-    Navigator.pop(context);
+    Navigator.pop(context, true);
+  }
+
+  void _showAlertDialog(String msg) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text('Status'),
+      content: Text(msg),
+    );
+    showDialog(context: context, builder: (_) => alertDialog);
   }
 }
