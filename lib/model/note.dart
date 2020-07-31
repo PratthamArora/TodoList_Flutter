@@ -41,4 +41,24 @@ class Note {
       this._priority = newPriority;
     }
   }
+
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+
+    map['title'] = _title;
+    map['description'] = _description;
+    map['priority'] = _priority;
+    map['date'] = _date;
+    if (id != null) map['id'] = _id;
+
+    return map;
+  }
+
+  Note.fromMapObject(Map<String, dynamic> map) {
+    this._id = map['id'];
+    this._title = map['title'];
+    this._description = map['description'];
+    this._priority = map['priority'];
+    this._date = map['date'];
+  }
 }
