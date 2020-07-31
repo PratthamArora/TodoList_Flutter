@@ -41,35 +41,41 @@ class NoteListState extends State<NoteList> {
 
   ListView getNotes() {
     TextStyle titleStyle = Theme.of(context).textTheme.subhead;
+
     return ListView.builder(
         itemCount: count,
+        padding: EdgeInsets.only(top: 12.0),
         itemBuilder: (BuildContext context, int pos) {
-          return Card(
-            color: Colors.white,
-            elevation: 2.0,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: getPriorityColor(this.noteList[pos].priority),
-                child: getPriorityIcon(this.noteList[pos].priority),
-              ),
-              title: Text(
-                this.noteList[pos].title,
-                style: titleStyle,
-              ),
-              subtitle: Text(this.noteList[pos].date),
-              trailing: GestureDetector(
-                child: Icon(
-                  Icons.delete,
-                  color: Colors.grey,
+          return Padding(
+            padding: EdgeInsets.only(top: 4.0, left: 12.0, right: 12.0),
+            child: Card(
+              color: Colors.white,
+              elevation: 2.0,
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundColor:
+                      getPriorityColor(this.noteList[pos].priority),
+                  child: getPriorityIcon(this.noteList[pos].priority),
+                ),
+                title: Text(
+                  this.noteList[pos].title,
+                  style: titleStyle,
+                ),
+                subtitle: Text(this.noteList[pos].date),
+                trailing: GestureDetector(
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.grey,
+                  ),
+                  onTap: () {
+                    _deleteNote(context, noteList[pos]);
+                  },
                 ),
                 onTap: () {
-                  _deleteNote(context, noteList[pos]);
+                  debugPrint("ListTile Tapped");
+                  navigateToDetail(this.noteList[pos], 'Edit ToDo');
                 },
               ),
-              onTap: () {
-                debugPrint("ListTile Tapped");
-                navigateToDetail(this.noteList[pos], 'Edit ToDo');
-              },
             ),
           );
         });
