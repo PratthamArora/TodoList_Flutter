@@ -9,6 +9,8 @@ class NoteDetail extends StatefulWidget {
 
 class NoteDetailState extends State<NoteDetail> {
   static var _priority = ['High', 'Low'];
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +41,85 @@ class NoteDetailState extends State<NoteDetail> {
                     });
                   },
                 ),
-              )
+              ),
+
+              // second element
+              Padding(
+                padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                child: TextField(
+                  controller: titleController,
+                  style: textStyle,
+                  onChanged: (value) {
+                    debugPrint('New value is $value');
+                  },
+                  decoration: InputDecoration(
+                      labelStyle: textStyle,
+                      labelText: 'Title',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0))),
+                ),
+              ),
+
+              // third element
+              Padding(
+                padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                child: TextField(
+                  controller: descController,
+                  style: textStyle,
+                  onChanged: (value) {
+                    debugPrint('New value is $value');
+                  },
+                  decoration: InputDecoration(
+                      labelStyle: textStyle,
+                      labelText: 'Description',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0))),
+                ),
+              ),
+
+              // last element
+              Padding(
+                padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        color: Theme.of(context).primaryColorDark,
+                        textColor: Theme.of(context).primaryColorLight,
+                        child: Text(
+                          'Save',
+                          textScaleFactor: 1.5,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            debugPrint('Save button clicked');
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      width: 5.0,
+                    ),
+                    Expanded(
+                      child: RaisedButton(
+                        color: Theme.of(context).primaryColorDark,
+                        textColor: Theme.of(context).primaryColorLight,
+                        child: Text(
+                          'Delete',
+                          textScaleFactor: 1.5,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            debugPrint('Delete button clicked');
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ));
-    ;
   }
 }
