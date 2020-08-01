@@ -5,4 +5,4 @@ A TodoList app that uses SQLite Database to save todos. It uses Future and async
 
 # Demo
 
-<img src="demo/demo.gif" width="300" height="300"/>
+<img src="demo/demo.gif" width="500" height="500"/>
