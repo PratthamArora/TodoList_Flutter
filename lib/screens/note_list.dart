@@ -44,10 +44,10 @@ class NoteListState extends State<NoteList> {
 
     return ListView.builder(
         itemCount: count,
-        padding: EdgeInsets.only(top: 12.0),
+        padding: EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
         itemBuilder: (BuildContext context, int pos) {
           return Padding(
-            padding: EdgeInsets.only(top: 4.0, left: 12.0, right: 12.0),
+            padding: EdgeInsets.only(bottom: 6.0),
             child: Card(
               color: Colors.white,
               elevation: 2.0,
